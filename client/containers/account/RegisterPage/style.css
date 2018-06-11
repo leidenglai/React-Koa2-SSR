@@ -1,0 +1,36 @@
+.registerTitle {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.registerBtn {
+  width: 100%;
+}
+
+.content {
+  padding-top: 150px;
+  height: 100%;
+  width: 100%;
+}
+
+.registerFormWrap {
+  width: 480px;
+  margin: 0 auto;
+}
+
+.logo {
+  margin: 0 auto;
+  width: 182px;
+  height: 25px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.registerFormContent {
+  padding: 48px 48px 0;
+  width: 100%;
+}
+
+.registerBtnWrap {
+  padding-top: 24px;
+}

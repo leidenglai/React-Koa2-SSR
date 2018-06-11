@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "client/*": ["client/*"],
+      "assets/*": ["client/assets/*"],
+      "actions/*": ["client/redux/actions/*"],
+      "components/*": ["client/components/*"],
+      "constants/*": ["client/constants/*"],
+      "reducers/*": ["client/redux/reducers/*"],
+      "store/*": ["client/redux/store/*"],
+      "routes": ["client/routes"],
+      "services/*": ["client/services/*"],
+      "utils/*": ["client/utils/*"],
+      "containers/*": ["client/containers/*"],
+      "static/*": ["static/*"]
+    },
+    "experimentalDecorators": true
+  }
+}
