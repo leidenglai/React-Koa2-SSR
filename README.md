@@ -6,10 +6,9 @@
 
 ```
 1. 安装 `Node.js[必须]` `MongoDB[必须]`
-2. 启动 MongoDB `$ mongod -f /usr/local/etc/mongod.conf`
-3. `$ npm install` 安装项目 的依赖包
-4. `cp config.default.js config.js` 请根据需要修改配置文件
-6. `$ npm run dev`
-7. visit `http://localhost:3000`
-8. done!
+2. `$ npm install` 安装项目的依赖包
+3. 启动 MongoDB `$ mongod -f /usr/local/etc/mongod.conf`
+4. `$ npm run dev`
+5. visit `http://localhost:3000`
+6. done!
 ```
