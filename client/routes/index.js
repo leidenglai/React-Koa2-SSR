@@ -2,14 +2,6 @@
 import createContainer from 'utils/createContainer'
 // import userAuth from 'utils/userAuth' // 用户访问拦截器
 
-// Hook for server
-// if (typeof require.ensure !== 'function') {
-//   require.ensure = function(dependencies, callback) {
-//     // 避免前后端渲染差异， require.ensure加载的交给前端渲染
-//     callback(require)
-//   }
-// }
-
 export default [
   {
     path: 'browserError',
@@ -57,5 +49,13 @@ export default [
         }
       }
     ]
+  },
+  {
+    path: '/',
+    indexRoute: {
+      onEnter: (nextState, replace) => {
+        replace('/account')
+      }
+    }
   }
 ]

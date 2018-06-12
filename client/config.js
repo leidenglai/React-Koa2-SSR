@@ -24,4 +24,4 @@ export const SERVER_API_PORT = '3000'
 export const SELLER_HOSTNAME = SELLER_MAIN_DOMAIN
 
 // 请求默认参数
-export const DEF_REQUEST_CONFIG = { userId: '000001' }
+export const DEF_REQUEST_CONFIG = {}

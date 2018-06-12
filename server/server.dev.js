@@ -75,6 +75,7 @@ const hotMiddleware = require('koa-webpack-hot-middleware')
 const views = require('koa-views')
 const clientRoute = require('./middlewares/clientRoute')
 const packBody = require('./middlewares/packBody')
+const handle404 = require('./middlewares/handle404')
 const router = require('./routes')
 
 // mongo数据库
@@ -103,7 +104,7 @@ compiler.plugin('emit', (compilation, callback) => {
 app.use(views(path.resolve(__dirname, '../views/dev'), { map: { html: 'ejs' } }))
 app.use(clientRoute)
 app.use(router.routes())
-app.use(packBody)
+app.use(packBody) // 处理body返回
 
 app.use(router.allowedMethods())
 console.log(
@@ -118,4 +119,7 @@ app.use(
   )
 )
 app.use(convert(hotMiddleware(compiler)))
+
+app.use(handle404) // 处理404
+
 app.listen(port)

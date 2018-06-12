@@ -8,7 +8,7 @@ const router = new Router({ prefix: '/user' })
 router.get('/getSharekey', checkAuth, user.getSharekey)
 
 // 获取用户信息
-router.get('/getSellerBaseProfile', user.getSellerBaseProfile)
+router.get('/getSellerBaseProfile', checkAuth, user.getSellerBaseProfile)
 
 // 登录
 router.get('/login', user.login)
