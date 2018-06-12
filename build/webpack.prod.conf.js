@@ -1,21 +1,23 @@
 const webpack = require('webpack')
+const path = require('path')
+const fs = require('fs')
 const baseConfig = require('./webpack.base.conf')
-const config = baseConfig.config
-const commonPath = baseConfig.commonPath
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const SOURCE_MAP = 'cheap-module-eval-source-map'
 
-config.output.filename = '[name].[chunkhash:6].js'
-config.output.chunkFilename = '[id].[chunkhash:6].js'
+const clientConfig = baseConfig.config
+const commonPath = baseConfig.commonPath
 
-config.devtool = SOURCE_MAP ? 'hidden-source-map' : false
+clientConfig.output.filename = '[name].[chunkhash:6].js'
+clientConfig.output.chunkFilename = '[id].[chunkhash:6].js'
+
+clientConfig.devtool = SOURCE_MAP ? 'hidden-source-map' : false
 
 // 生产环境下分离出 CSS 文件
 // modifyVars 替换默认主题
-config.module.rules.push(
+clientConfig.module.rules.push(
   {
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
@@ -32,11 +34,7 @@ config.module.rules.push(
   }
 )
 
-config.plugins.push(
-  new CleanWebpackPlugin('dist', {
-    root: commonPath.rootPath,
-    verbose: false
-  }),
+clientConfig.plugins.push(
   // 启用作用域提升
   // 作用域提升会移除模块外的函数包装,体积改进; 更显著的改进是 JavaScript 在浏览器中加载的速度
   new webpack.optimize.ModuleConcatenationPlugin(),
@@ -61,4 +59,62 @@ config.plugins.push(
   })
 )
 
-module.exports = config
+function getExternals() {
+  return fs
+    .readdirSync(path.resolve(__dirname, '../node_modules'))
+    .filter(filename => !filename.includes('.bin'))
+    .reduce((externals, filename) => {
+      externals[filename] = `commonjs ${filename}`
+
+      return externals
+    }, {})
+}
+
+const serverConfig = {
+  context: path.resolve(__dirname, '..'),
+  entry: { server: './server/server.prod' },
+  output: {
+    path: path.resolve(__dirname, '../dist/server'),
+    filename: '[name].js',
+    chunkFilename: 'chunk.[name].js'
+  },
+  target: 'node',
+  node: {
+    __filename: true,
+    __dirname: true
+  },
+  module: {
+    rules: [
+      ...baseConfig.config.module.rules,
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'postcss-loader']
+        })
+      },
+      {
+        test: /\.less$/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'postcss-loader', 'less-loader']
+        })
+      }
+    ]
+  },
+  externals: getExternals(),
+  resolve: baseConfig.config.resolve,
+  plugins: [
+    ...baseConfig.config.plugins,
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 30000 }),
+    new webpack.optimize.UglifyJsPlugin({ sourceMap: false }),
+    new ExtractTextPlugin({
+      filename: '[name].[contenthash:6].css',
+      allChunks: true // 若要按需加载 CSS 则请注释掉该行
+    }),
+    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) })
+  ]
+}
+
+module.exports = [clientConfig, serverConfig]

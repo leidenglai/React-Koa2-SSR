@@ -85,10 +85,8 @@ module.exports = {
               }),
             'eslint-loader'
           ],
-          include: src,
 
-          // 引用了一个富文本编辑器 进行了私人订制
-          exclude: /node_modules|utils\/react-lz-editor/
+          exclude: /node_modules/
         },
         {
           test: /\.html$/,

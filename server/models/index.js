@@ -13,4 +13,4 @@ db.on('error', err => {
 // models
 require('./user')
 
-export default { User: mongoose.model('userColletion') }
+export const User = mongoose.model('userColletion')
