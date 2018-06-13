@@ -3,3 +3,4 @@ node_modules
 client/assets
 client/utils/libs
 static
+*.test.js

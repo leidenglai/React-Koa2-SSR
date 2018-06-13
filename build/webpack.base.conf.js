@@ -18,7 +18,7 @@ let commonPath = {
 
 // 静态资源目录
 // const CDN_PATH = `${env == 'development' ? 'http://' : '//'}nstatic.mysshops.com/static/`;
-const CDN_PATH = `${env == 'development' ? 'http://' : '//'}static.mynovoshops.com/static/`
+const CDN_PATH = `${env == 'production' ? '//static.mynovoshops.com/static/' : 'http://'}`
 
 process.noDeprecation = true
 

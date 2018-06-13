@@ -10,7 +10,7 @@
     "clean": "rimraf ./dist/client/* && rimraf ./dist/server/* && rimraf ./views/prod/*",
     "build": "cross-env NODE_ENV=production node build/prod.js",
     "build:dll": "webpack --config build/webpack.dll.conf.js",
-    "test": "NODE_PATH=./server mocha 'test/**/*.test.js' --reporter spec -r should -r test/env --timeout 30000 --compilers js:babel-core/register"
+    "test": "cross-env NODE_ENV=test mocha 'test/**/*.test.js' --reporter spec -r should -r test/env --timeout 15000 --compilers js:babel-core/register"
   },
   "repository": {
     "type": "git",
@@ -97,6 +97,7 @@
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-mocha": "^5.0.0",
     "eslint-plugin-react": "^6.8.0",
+    "eventproxy": "^1.0.0",
     "eventsource-polyfill": "^0.9.6",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.11",
@@ -114,11 +115,13 @@
     "module-alias": "^2.0.6",
     "nock": "^9.3.2",
     "node-sass": "^3.4.2",
+    "pedding": "^1.1.0",
     "postcss": "^6.0.21",
     "postcss-less": "^1.1.5",
     "postcss-loader": "^1.3.3",
     "progress-bar-webpack-plugin": "^1.10.0",
     "react-hot-loader": "^3.0.0",
+    "ready": "^0.1.1",
     "redux-devtools": "^3.4.0",
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.0.11",

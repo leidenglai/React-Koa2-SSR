@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { User } from '../models'
 
 /**
@@ -12,9 +13,9 @@ export async function createUser(userData) {
  * 根据用户id列表查找用户分享appid
  */
 export async function getInitShareData(uid) {
-  const user = await User.findOne({ uid }, 'shareData', { lean: true }).exec()
+  const user = await User.findOne({ uid }, { shareData: 1 }, { lean: true }).exec()
 
-  return user.shareData
+  return _.map(user.shareData, o => _.omitBy(o, '_id'))
 }
 
 /**

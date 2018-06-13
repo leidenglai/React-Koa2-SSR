@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import crypto from 'crypto'
+import jwt from 'jsonwebtoken'
 
 import BaseModel from './base'
 import Sequence from './sequence'
@@ -33,7 +34,7 @@ UserSchema.index({ uid: 1 }, { unique: true })
 UserSchema.index({ email: 1 }, { unique: true })
 UserSchema.index({ phone: 1 }, { unique: true })
 
-// 在创建user时，生成自增ID值
+// 在创建user时，生成自增ID值和webtoken
 UserSchema.pre('save', function(next) {
   const now = new Date()
   const self = this
@@ -45,6 +46,10 @@ UserSchema.pre('save', function(next) {
         throw err
       }
       self.uid = result.value.next
+
+      // 注册token
+      self.webToken = jwt.sign({ email: self.email, uid: self.uid }, config.secret, { expiresIn: 86400 })
+
       next()
     })
   } else {
