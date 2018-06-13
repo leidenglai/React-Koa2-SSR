@@ -3,7 +3,8 @@
     "browser": true,
     "node": true,
     "commonjs": true,
-    "es6": true
+    "es6": true,
+    "mocha": true
   },
   "parser": "babel-eslint",
   "extends": ["eslint:recommended", "plugin:react/recommended"],
@@ -14,7 +15,9 @@
       "jsx": true
     }
   },
+  "plugins": ["mocha"],
   "rules": {
+    "mocha/no-exclusive-tests": "error",
     "array-bracket-spacing": ["error"],
     "arrow-body-style": ["error", "as-needed", { "requireReturnForObjectLiteral": true }],
     "arrow-parens": ["error", "as-needed"],

@@ -5,29 +5,29 @@ import { Promise } from 'es6-promise'
 import * as proxyUser from '../proxy/user'
 import config from '../config'
 
-async function getSharekey(ctx, next) {
+export function getSharekey(ctx) {
   const { uid } = ctx.userData
-  const shareData = await proxyUser.getInitShareData(uid)
 
-  ctx.body = { data: shareData }
-
-  next()
+  return proxyUser.getInitShareData(uid).then(shareData => {
+    ctx.body = { data: shareData }
+  })
 }
 
-async function getSellerBaseProfile(ctx, next) {
+/**
+ *  获取用户信息
+ */
+export function getSellerBaseProfile(ctx) {
   const { uid } = ctx.userData
 
-  const userData = await proxyUser.getUserDataByUserId(uid)
-
-  ctx.body = { data: userData }
-
-  next()
+  return proxyUser.getUserDataByUserId(uid).then(userData => {
+    ctx.body = { data: userData }
+  })
 }
 
 /**
  * 登录
  */
-function login(ctx) {
+export function login(ctx) {
   return proxyUser
     .checkUser(ctx.query)
     .then(checkResult => {
@@ -74,7 +74,7 @@ function login(ctx) {
 /**
  * 注册
  */
-function registerUser(ctx) {
+export function registerUser(ctx) {
   const { email, phone, pass } = _.mapValues(ctx.request.body, _.trim)
 
   // 检查用户名和邮箱是否存在
@@ -111,4 +111,9 @@ function registerUser(ctx) {
     })
 }
 
-export default { getSharekey, getSellerBaseProfile, login, registerUser }
+export default {
+  getSharekey,
+  getSellerBaseProfile,
+  login,
+  registerUser
+}

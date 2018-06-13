@@ -122,4 +122,4 @@ app.use(convert(hotMiddleware(compiler)))
 
 app.use(handle404) // 处理404
 
-app.listen(port)
+module.exports = app.listen(port)
