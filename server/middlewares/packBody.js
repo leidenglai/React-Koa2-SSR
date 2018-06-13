@@ -11,12 +11,11 @@ async function packBody(ctx, next) {
       ctx.body = {
         code: 200,
         data,
-        message: 'success'
+        message: message || 'success'
       }
     }
-  } else {
-    await next()
   }
+  await next()
 }
 
 export default packBody

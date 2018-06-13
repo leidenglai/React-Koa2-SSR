@@ -63,7 +63,7 @@ shimInil(window.localLanguage, () => {
         locale={appLocale.locale}
         messages={appLocale.messages}>
         <Provider store={store}>
-          <Router history={history} children={routes} />
+          <Router history={history}>{routes}</Router>
         </Provider>
       </IntlProvider>
     </LocaleProvider>

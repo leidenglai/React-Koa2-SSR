@@ -17,7 +17,7 @@
     "url": "git@github.com:leidenglai/React-Koa2-SSR.git"
   },
   "dependencies": {
-    "ajv": "^6.4.0",
+    "ajv": "^6.5.1",
     "antd": "^2.13.7",
     "babel-polyfill": "^6.23.0",
     "bcryptjs": "^2.3.0",
@@ -91,12 +91,12 @@
     "cross-env": "^3.2.4",
     "css-loader": "^0.23.1",
     "css-modules-require-hook": "^4.2.3",
-    "eslint": "^3.12.2",
+    "eslint": "^4.19.1",
     "eslint-friendly-formatter": "^1.2.2",
     "eslint-loader": "^1.7.0",
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-mocha": "^5.0.0",
-    "eslint-plugin-react": "^6.8.0",
+    "eslint-plugin-react": "^7.9.1",
     "eventproxy": "^1.0.0",
     "eventsource-polyfill": "^0.9.6",
     "extract-text-webpack-plugin": "^3.0.2",
@@ -131,7 +131,7 @@
     "source-map-support": "^0.5.4",
     "style-loader": "^0.13.1",
     "supertest": "^3.1.0",
-    "uglify-js": "git+https://github.com/mishoo/UglifyJS2.git#harmony",
+    "uglify-js": "^3.4.0",
     "url-loader": "^0.5.7",
     "webpack": "^3.8.1",
     "webpack-hot-middleware": "^2.6.0"

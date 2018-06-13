@@ -5,29 +5,33 @@ import { Promise } from 'es6-promise'
 import * as proxyUser from '../proxy/user'
 import config from '../config'
 
-export function getSharekey(ctx) {
+export function getSharekey(ctx, next) {
   const { uid } = ctx.userData
 
   return proxyUser.getInitShareData(uid).then(shareData => {
     ctx.body = { data: shareData }
+
+    next()
   })
 }
 
 /**
  *  获取用户信息
  */
-export function getSellerBaseProfile(ctx) {
+export function getSellerBaseProfile(ctx, next) {
   const { uid } = ctx.userData
 
   return proxyUser.getUserDataByUserId(uid).then(userData => {
     ctx.body = { data: userData }
+
+    next()
   })
 }
 
 /**
  * 登录
  */
-export function login(ctx) {
+export function login(ctx, next) {
   return proxyUser
     .checkUser(ctx.query)
     .then(checkResult => {
@@ -50,7 +54,6 @@ export function login(ctx) {
     .then(user => {
       // 登录成功处理
       ctx.body = {
-        code: 200,
         data: {
           email: user.email,
           phone: user.phone,
@@ -59,6 +62,8 @@ export function login(ctx) {
           uid: user.uid
         }
       }
+
+      next()
     })
     .catch(err => {
       // 统一处理Promise链的报错返回
@@ -68,13 +73,15 @@ export function login(ctx) {
         code,
         message: '用户或者密码错误'
       }
+
+      next()
     })
 }
 
 /**
  * 注册
  */
-export function registerUser(ctx) {
+export function registerUser(ctx, next) {
   const { email, phone, pass } = _.mapValues(ctx.request.body, _.trim)
 
   // 检查用户名和邮箱是否存在
@@ -97,10 +104,9 @@ export function registerUser(ctx) {
       })
     })
     .then(() => {
-      ctx.body = {
-        code: 200,
-        message: '注册成功'
-      }
+      ctx.body = { message: '注册成功' }
+
+      next()
     })
     .catch(err => {
       // 统一处理Promise链的报错返回
@@ -108,6 +114,8 @@ export function registerUser(ctx) {
         code: err.code,
         message: err.message
       }
+
+      next()
     })
 }
 
