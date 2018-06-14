@@ -5,7 +5,7 @@
 编辑器建议使用 vscode
 
 ```
-1. 安装 `Node.js[必须]` `MongoDB[必须]`
+1. 安装 `Node.js[必须]` `MongoDB[必须]` `Redis[必须]`
 2. `$ npm install` 安装项目的依赖包
 3. 启动 MongoDB `$ mongod -f /usr/local/etc/mongod.conf`
 3. 启动 Redis `$ redis-server /usr/local/redis/redis.conf`

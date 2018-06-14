@@ -65,8 +65,6 @@ export default function packOptionsToFetch({ api, params = {}, type = 'API', met
       completeApi = completeApi + '?' + requestParams.join('&')
     }
 
-    console.log(method)
-
     // 发送请求 返回promise对象
     fetch(completeApi, options)
       .then(responseHandler)
