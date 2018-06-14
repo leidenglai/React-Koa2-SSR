@@ -21,6 +21,7 @@
     "antd": "^2.13.7",
     "babel-polyfill": "^6.23.0",
     "bcryptjs": "^2.3.0",
+    "bluebird": "^3.5.1",
     "copy-to-clipboard": "^3.0.8",
     "ejs": "^2.5.8",
     "es6-promise": "^4.2.4",
@@ -57,11 +58,13 @@
     "react-router": "^2.7.0",
     "react-router-redux": "^4.0.5",
     "react-sortable-hoc": "^0.6.1",
+    "redis": "^2.8.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.1.0",
     "scriptjs": "^2.5.8",
     "superagent": "^3.8.2",
     "synthetic-dom": "^1.2.0",
+    "validator": "^10.3.0",
     "whatwg-fetch": "^0.11.1"
   },
   "devDependencies": {

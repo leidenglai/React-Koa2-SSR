@@ -4,6 +4,8 @@ import { Promise } from 'es6-promise'
 
 import * as proxyUser from '../proxy/user'
 import config from '../config'
+import { getSha1 } from '../utils/cryptoHelper'
+import redisClient from '../models/redisClient'
 
 export function getSharekey(ctx, next) {
   const { uid } = ctx.userData
@@ -34,23 +36,23 @@ export function getSellerBaseProfile(ctx, next) {
 export function login(ctx, next) {
   return proxyUser
     .checkUser(ctx.query)
-    .then(checkResult => {
-      if (checkResult && checkResult.comparePassword(ctx.query.pass)) {
+    .then(user => {
+      if (user && user.comparePassword(ctx.query.pass)) {
         // 创建token
-        const webToken = jwt.sign(
-          { email: checkResult.email, uid: checkResult.uid },
-          config.secret,
-          { expiresIn: 86400 }
-        ) // expires in 24 hours
+        const token = jwt.sign({ email: user.email, uid: user.uid }, config.secret, { expiresIn: 86400 }) // expires in 24 hours
 
-        // 更新用户的webToken
-        checkResult.webToken = webToken
+        // 生成短token
+        const hashToken = getSha1(token)
 
-        return checkResult.save()
+        user.webToken = hashToken
+
+        // 存入redis 然后再存数据库
+        return redisClient.setAsync(hashToken, token).then(() => user)
       } else {
         return Promise.reject(10001)
       }
     })
+    .then(user => user.save()) // 存入数据库
     .then(user => {
       // 登录成功处理
       ctx.body = {

@@ -15,7 +15,13 @@ const config = {
   secret: 'ilovenotbug',
 
   // 密码“加盐”
-  saltPassword: 'ilovenotbug2'
+  saltPassword: 'ilovenotbug2',
+
+  // redis 配置，默认是本地
+  redisHost: '127.0.0.1',
+  redisPort: 6379,
+  redisDb: 0,
+  redisPassword: ''
 }
 
 if (process.env.NODE_ENV === 'test') {

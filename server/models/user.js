@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 import crypto from 'crypto'
-import jwt from 'jsonwebtoken'
 
 import BaseModel from './base'
 import Sequence from './sequence'
@@ -8,7 +7,7 @@ import config from '../config'
 
 const Schema = mongoose.Schema
 
-const UserSchema = new Schema(
+const userSchema = new Schema(
   {
     uid: { type: Number },
     name: String,
@@ -28,14 +27,14 @@ const UserSchema = new Schema(
   { collection: 'userColletion' }
 )
 
-UserSchema.plugin(BaseModel)
+userSchema.plugin(BaseModel)
 
-UserSchema.index({ uid: 1 }, { unique: true })
-UserSchema.index({ email: 1 }, { unique: true })
-UserSchema.index({ phone: 1 }, { unique: true })
+userSchema.index({ uid: 1 }, { unique: true })
+userSchema.index({ email: 1 }, { unique: true })
+userSchema.index({ phone: 1 }, { unique: true })
 
 // 在创建user时，生成自增ID值和webtoken
-UserSchema.pre('save', function(next) {
+userSchema.pre('save', function(next) {
   const now = new Date()
   const self = this
 
@@ -47,9 +46,6 @@ UserSchema.pre('save', function(next) {
       }
       self.uid = result.value.next
 
-      // 注册token
-      self.webToken = jwt.sign({ email: self.email, uid: self.uid }, config.secret, { expiresIn: 86400 })
-
       next()
     })
   } else {
@@ -58,7 +54,7 @@ UserSchema.pre('save', function(next) {
 })
 
 // 保存密码时处理密码加密
-UserSchema.pre('save', function(next) {
+userSchema.pre('save', function(next) {
   const now = new Date()
 
   if (this.isModified('password') || this.isNew) {
@@ -75,7 +71,7 @@ UserSchema.pre('save', function(next) {
 })
 
 // 校验用户输入密码是否正确
-UserSchema.methods.comparePassword = function(passw) {
+userSchema.methods.comparePassword = function(passw) {
   const currPass = crypto
     .createHash('sha1')
     .update(passw + ':' + config.saltPassword)
@@ -84,4 +80,9 @@ UserSchema.methods.comparePassword = function(passw) {
   return currPass === this.pass
 }
 
-mongoose.model('userColletion', UserSchema)
+// 查询用户的shareData
+userSchema.query.onlyShareData = function(uid) {
+  return this.findOne({ uid }, { shareData: 1 })
+}
+
+mongoose.model('userColletion', userSchema)

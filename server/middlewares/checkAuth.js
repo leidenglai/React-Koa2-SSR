@@ -1,26 +1,34 @@
-/* !
- * Moajs Middle
- * Copyright(c) 2015-2019 Alfred Sang <shiren1118@126.com>
- * MIT Licensed
- */
 import jwt from 'jsonwebtoken' // 用来创建和确认用户信息摘要
-
+import validator from 'validator'
 import config from '../config'
+import redisClient from '../models/redisClient'
 
 // 检查用户会话
-export default async function checkAuth(ctx, next) {
+export async function auth(ctx, next) {
   // 检查post的信息或者url查询参数或者头信息
-  const webToken =
-    ctx.body && ctx.body.webToken || ctx.query.webToken || ctx.headers['x-access-token']
+  let webToken = String(
+    ctx.body && ctx.body.webToken || ctx.query.webToken || ctx.headers['x-access-token'] || ''
+  )
+
+  webToken = validator.trim(webToken)
 
   // 解析 token
   if (webToken) {
+    // redis中取出token原文
+    const token = await redisClient.getAsync(webToken)
+
+    console.log(token)
+
+    if (!token) {
+      return ctx.throw(401, { msg: '错误的accessToken' })
+    }
+
     // invalid token - synchronous
     try {
-      // 确认token
-      const decoded = jwt.verify(webToken, config.secret)
+      // 校验token过期
+      const decoded = jwt.verify(token, config.secret)
 
-      ctx.userData = decoded
+      ctx.userData = { ...decoded, webToken }
       await next()
     } catch (err) {
       return ctx.throw(401, { msg: 'token过期' })

@@ -13,9 +13,16 @@ export async function createUser(userData) {
  * 根据用户id列表查找用户分享appid
  */
 export async function getInitShareData(uid) {
-  const user = await User.findOne({ uid }, { shareData: 1 }, { lean: true }).exec()
+  const user = await User.findOne().onlyShareData(uid)
 
-  return _.map(user.shareData, o => _.omitBy(o, '_id'))
+  const shareData = _.map(user.shareData, o => {
+    return {
+      key: o.key,
+      appId: o.appId
+    }
+  })
+
+  return shareData
 }
 
 /**

@@ -1,14 +1,14 @@
 import Router from 'koa-router'
 import user from '../controllers/user'
-import checkAuth from '../middlewares/checkAuth'
+import { auth } from '../middlewares/checkAuth'
 
 const router = new Router({ prefix: '/user' })
 
 // 测试接口
-router.get('/getSharekey', checkAuth, user.getSharekey)
+router.get('/getSharekey', auth, user.getSharekey)
 
 // 获取用户信息
-router.get('/getSellerBaseProfile', checkAuth, user.getSellerBaseProfile)
+router.get('/getSellerBaseProfile', auth, user.getSellerBaseProfile)
 
 // 登录
 router.get('/login', user.login)

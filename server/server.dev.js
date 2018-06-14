@@ -82,6 +82,9 @@ const router = require('./routes')
 require('./middlewares/mongooseLog') // 打印 mongodb 查询日志
 require('./models')
 
+// redis
+require('./models/redisClient')
+
 const port = process.env.port || 3000
 const compiler = webpack(webpackConfig)
 

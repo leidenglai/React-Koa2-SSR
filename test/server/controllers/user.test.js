@@ -36,9 +36,14 @@ describe('test/server/controllers/user.test.js', () => {
     )
 
     support.createUser(userData).then(
-      user => {
-        testUser = user
-        done()
+      () => {
+        // 调用登录
+        request
+          .get(`/api/user/login?email=${userData.email}&pass=${userData.pass}`)
+          .expect(200, (err, res) => {
+            testUser = res.body.data
+            done()
+          })
       },
       err => {
         done(err)
