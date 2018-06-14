@@ -16,4 +16,7 @@ router.get('/login', user.login)
 // 注册
 router.post('/register', user.registerUser)
 
+// 退出登录
+router.get('/loginout', auth, user.loginOut)
+
 export default router

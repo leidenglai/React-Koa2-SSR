@@ -121,9 +121,26 @@ export function registerUser(ctx, next) {
     })
 }
 
+/**
+ *  退出登录
+ */
+export function loginOut(ctx, next) {
+  const { webToken } = ctx.userData
+
+  // 删除redis中的webToken 跳转到登录
+  return redisClient.delAsync(webToken).then(() => {
+    ctx.body = { code: 301 }
+
+    ctx.redirect('/account')
+    ctx.status = 301
+    next()
+  })
+}
+
 export default {
   getSharekey,
   getSellerBaseProfile,
   login,
-  registerUser
+  registerUser,
+  loginOut
 }

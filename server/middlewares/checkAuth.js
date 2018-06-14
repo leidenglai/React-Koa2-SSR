@@ -17,8 +17,6 @@ export async function auth(ctx, next) {
     // redis中取出token原文
     const token = await redisClient.getAsync(webToken)
 
-    console.log(token)
-
     if (!token) {
       return ctx.throw(401, { msg: '错误的accessToken' })
     }
