@@ -8,6 +8,7 @@
 1. 安装 `Node.js[必须]` `MongoDB[必须]`
 2. `$ npm install` 安装项目的依赖包
 3. 启动 MongoDB `$ mongod -f /usr/local/etc/mongod.conf`
+3. 启动 Redis `$ redis-server /usr/local/redis/redis.conf`
 4. 启动开发环境 `$ npm run dev`
 5. visit `http://localhost:3000`
 6. done!
