@@ -21,7 +21,10 @@ const config = {
   redisHost: '127.0.0.1',
   redisPort: 6379,
   redisDb: 0,
-  redisPassword: ''
+  redisPassword: '',
+
+  // token 失效时间 86400 = 1day
+  tokenExpire: 86400
 }
 
 if (process.env.NODE_ENV === 'test') {

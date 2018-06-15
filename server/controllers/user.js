@@ -1,10 +1,10 @@
 import _ from 'lodash'
-import jwt from 'jsonwebtoken'
 import { Promise } from 'es6-promise'
 
 import * as proxyUser from '../proxy/user'
 import config from '../config'
-import { getSha1 } from '../utils/cryptoHelper'
+import statusCode from '../common/statusCode'
+import { getHmac } from '../utils/cryptoHelper'
 import redisClient from '../models/redisClient'
 
 export function getSharekey(ctx, next) {
@@ -39,20 +39,27 @@ export function login(ctx, next) {
     .then(user => {
       if (user && user.comparePassword(ctx.query.pass)) {
         // 创建token
-        const token = jwt.sign({ email: user.email, uid: user.uid }, config.secret, { expiresIn: 86400 }) // expires in 24 hours
+        const hashToken = getHmac(user.email, config.secret)
+        const userDataJson = JSON.stringify({
+          email: user.email,
+          uid: user.uid,
+          webToken: hashToken
+        })
 
-        // 生成短token
-        const hashToken = getSha1(token)
+        // 使用token作为key将用户数据存入redis 然后再存数据库
+        const redisSetPromise = redisClient.setAsync(hashToken, userDataJson).then(() => user)
+
+        // Expire in 3 seconds
+        redisClient.expire(hashToken, config.tokenExpire)
 
         user.webToken = hashToken
 
-        // 存入redis 然后再存数据库
-        return redisClient.setAsync(hashToken, token).then(() => user)
+        return redisSetPromise // 存入数据库
       } else {
-        return Promise.reject(10001)
+        return Promise.reject(statusCode.err10001)
       }
     })
-    .then(user => user.save()) // 存入数据库
+    .then(user => user.save())
     .then(user => {
       // 登录成功处理
       ctx.body = {
@@ -68,13 +75,10 @@ export function login(ctx, next) {
       next()
     })
     .catch(err => {
-      // 统一处理Promise链的报错返回
-      const code = _.isNumber(err) ? err : err.code || 100003
+      const code = err.code ? err.code : 10001
 
-      ctx.body = {
-        code,
-        message: '用户或者密码错误'
-      }
+      // 统一处理Promise链的报错返回
+      ctx.body = _.assign(err, { code })
 
       next()
     })
@@ -91,11 +95,11 @@ export function registerUser(ctx, next) {
     .then(data => {
       if (data[0]) {
         // 邮箱已存在
-        return Promise.reject({ code: 100002, message: '邮箱已存在' })
+        return Promise.reject(statusCode.err10002)
       }
       if (data[1]) {
         // 手机号已存在
-        return Promise.reject({ code: 100003, message: '手机号已存在' })
+        return Promise.reject(statusCode.err10003)
       }
 
       return proxyUser.createUser({
@@ -112,10 +116,7 @@ export function registerUser(ctx, next) {
     })
     .catch(err => {
       // 统一处理Promise链的报错返回
-      ctx.body = {
-        code: err.code,
-        message: err.message
-      }
+      ctx.body = err
 
       next()
     })
@@ -129,7 +130,7 @@ export function loginOut(ctx, next) {
 
   // 删除redis中的webToken 跳转到登录
   return redisClient.delAsync(webToken).then(() => {
-    ctx.body = { code: 301 }
+    ctx.body = statusCode.info301
 
     ctx.redirect('/account')
     ctx.status = 301

@@ -29,14 +29,14 @@ class LoginForm extends PureComponent {
             message.success('注册成功，请登录')
           },
           ({ code, message }) => {
-            if (code === 100002) {
+            if (code === 10002) {
               this.props.form.setFields({
                 email: {
                   value: values.email,
                   errors: [new Error(message)]
                 }
               })
-            } else if (code === 100003) {
+            } else if (code === 10003) {
               this.props.form.setFields({
                 phone: {
                   value: values.phone,

@@ -97,4 +97,14 @@ describe('test/server/controllers/user.test.js', () => {
       })
     })
   })
+
+  describe('#loginout()', () => {
+    it('退出登录页面跳转到登录页', done => {
+      request.get('/api/user/loginout?webToken=' + testUser.webToken).end((err, res) => {
+        res.status.should.equal(301)
+        res.text.should.containEql('/account')
+        done()
+      })
+    })
+  })
 })
