@@ -28,7 +28,7 @@ import getLocalLanguageJson, { getLanguage } from 'utils/getLocalLanguageJson'
 import shimInil from 'utils/shimInil'
 
 // 初始化分享 如加载facebook SDK, 内含一个token的测试接口
-import 'utils/shareInit'
+// import 'utils/shareInit'
 
 /*
  * 国际化
@@ -58,10 +58,7 @@ shimInil(window.localLanguage, () => {
   // 加载intl,redux
   const App = () =>
     <LocaleProvider locale={appLocale.antd}>
-      <IntlProvider
-        className={window.localLanguage}
-        locale={appLocale.locale}
-        messages={appLocale.messages}>
+      <IntlProvider className={window.localLanguage} locale={appLocale.locale} messages={appLocale.messages}>
         <Provider store={store}>
           <Router history={history}>{routes}</Router>
         </Provider>
@@ -71,7 +68,7 @@ shimInil(window.localLanguage, () => {
   // ================================
   // 将根组件挂载到 DOM，启动！
   // ================================
-  ReactDOM.render(<App />, MOUNT_NODE)
+  ReactDOM.hydrate(<App />, MOUNT_NODE)
 })
 
 // === Webpack 处理 assets，取消注释即可进行测试 === //

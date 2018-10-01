@@ -13,21 +13,14 @@ config.output.chunkFilename = 'chunk.[id].js'
 config.devtool = SOURCE_MAP ? 'cheap-module-eval-source-map' : false
 
 // add hot-reload related code to entry chunk
-config.entry.app = [
-  config.entry.app,
-  'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000'
-]
+config.entry.app = [config.entry.app, 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000']
 
 // 开发环境下直接内嵌 CSS 以支持热替换
 // modifyVars 替换默认主题
 config.module.rules.push(
   {
     test: /\.css$/,
-    use: [
-      'style-loader',
-      `css-loader?modules&context=${__dirname}&localIdentName=[name]__[local]___[hash:base64:5]`,
-      'postcss-loader'
-    ]
+    use: ['style-loader', `css-loader?modules&context=${__dirname}&localIdentName=[name]__[local]___[hash:base64:5]`, 'postcss-loader']
   },
   {
     test: /\.less$/,
@@ -44,6 +37,7 @@ config.plugins.push(
   new webpack.NoEmitOnErrorsPlugin(),
   new ExtractTextPlugin({ filename: '[name].css' }),
 
+  new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('development') }),
   new HtmlWebpackPlugin({
     filename: '../views/dev/index.html',
     template: './views/tpl/index.tpl.html',

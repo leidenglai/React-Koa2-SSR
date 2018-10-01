@@ -17,7 +17,7 @@ let commonPath = {
 }
 
 // 静态资源目录
-const CDN_PATH = `${env == 'production' ? '//static.koareactdemo.com/client/' : 'http://'}`
+const CDN_PATH = `${env == 'production' ? '//lei.reacttest.com/client/' : 'http://'}`
 
 process.noDeprecation = true
 
@@ -115,10 +115,7 @@ module.exports = {
       new webpack.LoaderOptionsPlugin({
         options: {
           eslint: { formatter: require('eslint-friendly-formatter') },
-          postcss: [
-            rucksack(),
-            autoprefixer({ browsers: ['last 2 versions', 'Firefox ESR', '> 2%', 'ie >= 10', 'iOS >= 9'] })
-          ]
+          postcss: [rucksack(), autoprefixer({ browsers: ['last 2 versions', 'Firefox ESR', '> 2%', 'ie >= 10', 'iOS >= 9'] })]
         }
       }),
 
@@ -147,10 +144,6 @@ module.exports = {
       }),
 
       new webpack.DefinePlugin({
-        'process.env': {
-          // 这是给 React / Redux 打包用的
-          NODE_ENV: JSON.stringify('development')
-        },
         // ================================
         // 配置开发全局常量
         // ================================

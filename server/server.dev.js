@@ -85,7 +85,7 @@ require('./models')
 // redis
 require('./models/redisClient')
 
-const port = process.env.port || 3000
+const port = process.env.port || 7000
 const compiler = webpack(webpackConfig)
 
 // Webpack hook event to write html file into `/views/dev` from `/views/tpl` due to server render
@@ -110,9 +110,8 @@ app.use(router.routes())
 app.use(packBody) // 处理body返回
 
 app.use(router.allowedMethods())
-console.log(
-  `\n==> 🌎  Listening on port ${port}. Open up http://localhost:${port}/ in your browser.\n`
-)
+console.log(`\n==> 🌎  Listening on port ${port}. Open up http://localhost:${port}/ in your browser.\n`)
+
 app.use(
   convert(
     devMiddleware(compiler, {

@@ -18,7 +18,7 @@ global.__PROD__ = true
 
 global.__COMPONENT_DEVTOOLS__ = false
 
-const port = process.env.port || 80
+const port = process.env.port || 3000
 
 app.use(views(path.resolve(__dirname, '../views/prod'), { map: { html: 'ejs' } }))
 app.use(serve(path.resolve(__dirname, '../dist/client')))
@@ -29,6 +29,4 @@ app.use(router.allowedMethods())
 app.use(handle404) // 处理404
 app.listen(port)
 
-console.log(
-  `\n==> 🌎  Listening on port ${port}. Open up http://localhost:${port}/ in your browser.\n`
-)
+console.log(`\n==> 🌎  Listening on port ${port}. Open up http://localhost:${port}/ in your browser.\n`)

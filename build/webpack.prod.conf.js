@@ -22,7 +22,7 @@ clientConfig.module.rules.push(
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
       fallback: 'style-loader',
-      use: ['css-loader', 'postcss-loader']
+      use: [`css-loader?modules&context=${__dirname}&localIdentName=[name]__[local]___[hash:base64:5]`, 'postcss-loader']
     })
   },
   {
@@ -47,7 +47,8 @@ clientConfig.plugins.push(
     }
   ]),
   new webpack.optimize.UglifyJsPlugin({ sourceMap: false }),
-  new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 30000 }),
+  new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
+  // new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 30000 }),
   new ExtractTextPlugin({
     filename: '[name].[contenthash:6].css',
     allChunks: true // 若要按需加载 CSS 则请注释掉该行
@@ -90,7 +91,7 @@ const serverConfig = {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: ['css-loader', 'postcss-loader']
+          use: [`css-loader?modules&context=${__dirname}&localIdentName=[name]__[local]___[hash:base64:5]`, 'postcss-loader']
         })
       },
       {
@@ -107,13 +108,13 @@ const serverConfig = {
   plugins: [
     ...baseConfig.config.plugins,
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 30000 }),
-    new webpack.optimize.UglifyJsPlugin({ sourceMap: false }),
+    // new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 30000 }),
+    // new webpack.optimize.UglifyJsPlugin({ sourceMap: false }),
     new ExtractTextPlugin({
       filename: '[name].[contenthash:6].css',
       allChunks: true // 若要按需加载 CSS 则请注释掉该行
     }),
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) })
+    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') })
   ]
 }
 

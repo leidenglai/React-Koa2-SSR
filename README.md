@@ -10,7 +10,7 @@
 3. 启动 MongoDB `$ mongod -f /usr/local/etc/mongod.conf`
 3. 启动 Redis `$ redis-server /usr/local/redis/redis.conf`
 4. 启动开发环境 `$ npm run dev`
-5. visit `http://localhost:3000`
+5. visit `http://localhost:7000`
 6. done!
 ```
 

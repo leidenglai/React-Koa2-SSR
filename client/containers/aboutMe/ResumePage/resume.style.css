@@ -1,0 +1,67 @@
+.mainWrap {
+  max-width: 1080px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 24px 0;
+  background-color: #fff;
+}
+
+.siderTop {
+  text-align: center;
+  padding: 0 24px;
+}
+
+.siderTopAvatar {
+  width: 240px;
+  height: 240px;
+  margin: 36px auto 8px;
+}
+
+.sider {
+  background-color: #fff;
+}
+
+.siderTitle {
+  margin-left: 8px;
+}
+
+.siderContentLi {
+  margin-bottom: 8px;
+}
+
+.contentWrap {
+  padding: 24px 36px;
+  background-color: #fff;
+}
+
+.timelineHeader {
+  display: flex;
+}
+
+.companyLogo {
+  width: 46px;
+  height: 46px;
+  margin-right: 10px;
+}
+
+.companyInfo {
+  flex: 1;
+}
+
+.companyDate {
+  width: 200px;
+  text-align: right;
+}
+
+.timelineTag {
+  margin-bottom: 1em;
+}
+
+.timelineContent {
+  color: #666;
+  margin-bottom: 32px;
+}
+
+.expListContent {
+  padding: 0 12px;
+}

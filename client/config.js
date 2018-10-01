@@ -18,7 +18,7 @@ let SERVER_API_ROOT = 'http://localhost'
 export const SERVER_API_ROOT_API = SERVER_API_ROOT
 
 // 端口
-export const SERVER_API_PORT = '3000'
+export const SERVER_API_PORT = '7000'
 
 // 卖家后台域名
 export const SELLER_HOSTNAME = SELLER_MAIN_DOMAIN

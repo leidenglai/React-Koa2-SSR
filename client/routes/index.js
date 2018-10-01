@@ -15,6 +15,18 @@ export default [
     }
   },
   {
+    path: 'about-me',
+    getComponent(nextState, cb) {
+      /* 组件连接 state */
+      const AboutMeContainer = createContainer(({ userData }) => {
+        return { userData }
+      })(require('containers/aboutMe/ResumePage'))
+
+      cb(null, AboutMeContainer)
+    }
+  },
+
+  {
     path: 'account',
 
     indexRoute: {
