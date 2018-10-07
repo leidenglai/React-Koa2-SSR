@@ -13,5 +13,9 @@ webpack(config, (err, stats) => {
   console.log(stats.toString({ chunks: false, color: true }))
 
   // save build info to file
-  fs.writeFile(path.join(commonPath.dist, '__build_info__'), stats.toString({ color: false }))
+  fs.writeFile(path.join(commonPath.dist, '__build_info__'), stats.toString({ color: false }), err => {
+    if (err) {
+      console.log('error', err)
+    }
+  })
 })

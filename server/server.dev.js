@@ -60,6 +60,7 @@ require('asset-require-hook')({
 })
 
 const webpackConfig = require('../build/webpack.dev.conf')
+
 // 配置别名
 const moduleAlias = require('module-alias')
 
